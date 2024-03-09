@@ -62,11 +62,10 @@ def avg_slope_intercept(lines):
 
 def pixel_points(y1, y2, line):
     """
-    Converts the slope and intercept of each line into pixel points.
-        Parameters:
-            y1: y-value of the line's starting point.
-            y2: y-value of the line's end point.
-            line: The slope and intercept of the line.
+    This Function returns the pixel points (start and end point of the line)
+    y1 - y coordinate of start point of line
+    y2 - y coordinate of end point of line
+    line - it contains the slope and intercept of the line
     """
     if line is None:
         return None
@@ -79,10 +78,9 @@ def pixel_points(y1, y2, line):
 
 def reqd_lines(image, lines):
     """
-    Create full lenght lines from pixel points.
-        Parameters:
-            image: The input test image.
-            lines: The output lines from Hough Transform.
+    This function calculates the start and end point of required line
+    image - it is the image with the edges
+    lines - it is the lines obtained from Hough Lines Transform
     """
     line_sni = avg_slope_intercept(lines)
     y1 = image.shape[0]
