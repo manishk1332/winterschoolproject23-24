@@ -103,11 +103,10 @@ def avg_slope_intercept(lines):
 
 def pixel_points(y1, y2, line):
     """
-    Converts the slope and intercept of each line into pixel points.
-        Parameters:
-            y1: y-value of the line's starting point.
-            y2: y-value of the line's end point.
-            line: The slope and intercept of the line.
+    This Function returns the pixel points (start and end point of the line)
+    y1 - y coordinate of start point of line
+    y2 - y coordinate of end point of line
+    line - it contains the slope and intercept of the line
     """
     if line is None:
         return None
@@ -120,10 +119,9 @@ def pixel_points(y1, y2, line):
 
 def reqd_lines(image, lines):
     """
-    Create full lenght lines from pixel points.
-        Parameters:
-            image: The input test image.
-            lines: The output lines from Hough Transform.
+    This function calculates the start and end point of required line
+    image - it is the image with the edges
+    lines - it is the lines obtained from Hough Lines Transform
     """
     line_sni = avg_slope_intercept(lines)
     y1 = image.shape[0]
@@ -141,7 +139,10 @@ while(cap.isOpened()):
     # Capture frame-by-frame
     ret, frame = cap.read()
     if ret == True:
+        # Using Background Subtraction
         fgmask = fgbg.apply(frame)
+
+        # Cleaning the image
         opening = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
         closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
 
@@ -150,7 +151,7 @@ while(cap.isOpened()):
         ddepth = cv2.CV_16S
 
         src = cv2.GaussianBlur(closing, (3, 3), 0)
-        
+        # Identifying Edges using Derivatives
         grad_x = cv2.Sobel(src, ddepth, 1, 0, ksize=3, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
         grad_y = cv2.Sobel(src, ddepth, 0, 1, ksize=3, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
         
@@ -159,31 +160,18 @@ while(cap.isOpened()):
         
         grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
 
+        # Using Hough Lines Transform to get lines from img with edges
         lines = hough_lines(grad,6,0.161,700,-np.pi/2,np.pi/2)
 
+        # Displaying the lines
         l = None
-
         if(lines is not None):
             l = reqd_lines(grad, lines)
-
 
         if l is not None: 
             cv2.line(frame, l[0],l[1],(255,255,0),5)
 
-        '''for line in lines:
-            x1, y1, x2, y2 = line[0]
-            cv2.line(frame, (x1,y1),(x2,y2),(255,255,0),5)'''
-            
-        '''for rho, theta in lines:
-            x0 = polar2cartesian(rho, theta)
-            direction = np.array([x0[1], -x0[0]])
-            pt1 = np.round(x0 + 1000*direction).astype(int)
-            pt2 = np.round(x0 - 1000*direction).astype(int)
-            print(pt1,pt2)
-            cv2.line(frame, pt1, pt2, (0,0,255), 3, cv2.LINE_AA)'''
-
         cv2.imshow('Frame',frame)
-    
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
     
