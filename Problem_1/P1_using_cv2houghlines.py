@@ -129,22 +129,6 @@ while(cap.isOpened()):
     if l1 is not None: 
         cv2.line(frame, l1[0],l1[1],(255,255,0),5)
 
-    '''for line in lines:
-        x1, y1, x2, y2 = line[0]
-        cv2.line(frame, (x1,y1),(x2,y2),(255,255,0),5)'''
-        
-    '''for i in range(0, len(lines)):
-        rho = lines[i][0][0]
-        theta = lines[i][0][1]
-        a = math.cos(theta)
-        b = math.sin(theta)
-        x0 = a * rho
-        y0 = b * rho
-        pt1 = (int(x0 + 1000*(-b)), int(y0 + 1000*(a)))
-        pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
-        print(pt1,pt2)
-        cv2.line(frame, pt1, pt2, (0,0,255), 3, cv2.LINE_AA)'''
-
     cv2.imshow('Frame',frame)
  
     if cv2.waitKey(25) & 0xFF == ord('q'):
