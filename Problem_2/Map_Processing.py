@@ -2,7 +2,7 @@ import cv2 as cv
 import numpy as np
 import math
 
-map_init = cv.imread("assets/unlabelled_map.png", cv.IMREAD_COLOR)
+map_init = cv.imread(r"assets\unlabelled_map.png", cv.IMREAD_COLOR)
 cv.imshow("Unprocessed Map", map_init)
 cv.waitKey(0)
 cv.destroyAllWindows()
